@@ -1,60 +1,43 @@
-nmr1 = int(input("Enter 1st number:"))
-nmr2 = int(input("Enter 2nd number:"))
-sum_result = nmr1 + nmr2
-print ("Sum of the two numbers is: ", sum_result)
+import pandas as pd
+import numpy as np 
+import seaborn as sns 
+import matplotlib.pyplot as plt 
+import yfinance as yf
 
-answer = ""
-answer2 = ""
-answer3 = ""
-answer4 = ""
-while answer.lower() not in ["yes" , "no"]:
-        answer = input("Do you want to * or / the result, yes or no?")
-        if answer.lower() ==  "yes":
-            answer2 = input("* or /?")
-            if answer2.lower() == "*":
-                answer3= float(input("By how much?:"))
-                print ("The result is:", sum_result * answer3)
+nvda = yf.Ticker("nvda")
+stockinfo = nvda.info
+hist = nvda.history(period="max")
+hist.plot(kind="line", figsize=(12,12), subplots=True)
+major_indices = pd.read_html("https://finance.yahoo.com/world-indices")[0]
+ticker_list = major_indices [ 'Symbol'].str.replace("^","").str.lower().to_list()
+df = yf.download (ticker_list, period="ld", start="2020-01-13", end="2021-03-10")
+adj_close = df.dropna (thresh=10, axis=1)['Adj Close']
+adj_close.plot(figsize=(12,12));
 
-            elif answer2.lower() == "/":
-                answer4= float(input("By how much?:"))
-                while answer4 ==0:
-                    print("You can't divide by zero!, try  again:")
-                    answer4= float(input("By how much?:")) 
-                    print("You can't divide by zero!, try  again:")
-                if  answer4 != 0:
-                    print ("The result is:", sum_result / answer4)
-                  
+for key,value in stockinfo.items():
+    
+    print(key,":", value)
 
-        if answer.lower () == "no":
-                print("Goodbye!")
+print("sharesOutstanding"+ ": " +  str(nvda.info["sharesOutstanding"]))
 
+print(nvda.splits)
+print(nvda.dividends)
+print(nvda.major_holders)
+print(nvda.institutional_holders)
 
-                        
+# df = data frames of all years 
 
+df = nvda.dividends
+print(df)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+df = nvda.dividends
+data = df.resample("YE").sum() 
+data = data. reset_index() 
+data['Year'] = data['Date'].dt.year 
+plt.figure() 
+plt.bar(data['Year'], data['Dividends'])
+plt.ylabel( 'Dividend Yield ($)')
+plt.xlabel( "Year") 
+plt.title( "Nvdia Dividend History") 
+plt.xlim(2000,2024)
+plt.show()
