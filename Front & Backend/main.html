@@ -5,28 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat Stock</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="path-to-your-fontawesome.css" />
+
   </head>
   <body>
-    <header>
-      <h1>Chat Stock</h1>
+    <!-- Header Section -->
+    <header class="chat-header">
+      </div>
+      <button id="theme-toggle" class="theme-toggle">Toggle Dark Mode</button>
     </header>
+
+    <!-- Main Chat Area -->
     <main>
       <div id="chat-container" class="chat-container">
         <!-- Chat Messages Section -->
         <div id="chat-messages" class="chat-messages">
-          <!-- Messages will be dynamically added here -->
+          <div id="loading-spinner"></div>
         </div>
+
         <!-- Input Section -->
         <div class="chat-input">
-          <input
-            type="text"
-            id="chat-query"
-            placeholder="Ask a stock question"
-          />
-          <button id="send-message">Send</button>
+          <input type="text" id="chat-query" placeholder="Ask about a stock (e.g., AAPL)" />
+          <button id="send-message">
+            <i class="fa fa-paper-plane"></i>
+          </button>
         </div>
       </div>
     </main>
+
     <script src="script.js"></script>
   </body>
 </html>
